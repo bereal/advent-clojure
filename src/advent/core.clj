@@ -2,6 +2,12 @@
   (:require [advent.util :as util]
             [clojure.string :as string]
             [clojure.tools.cli :refer [parse-opts]]))
+(defmacro measure
+  [expr]
+  `(let [start# (. System (currentTimeMillis))
+         ret# ~expr
+         time# (- (. System (currentTimeMillis)) start#)]
+     [time# ret#]))
 
 (defn run [year day]
   (let [ns-name (str "advent.year" year ".day" (format "%02d" day))
@@ -11,9 +17,12 @@
           solve-1 (resolve "solve-1")
           solve-2 (resolve "solve-2")
           input (util/load-input year day)
-          parsed (parse input)]
-        (println (str "Part 1: " (solve-1 parsed)))
-        (println (str "Part 2: " (solve-2 parsed))))))
+          [tp parsed] (measure (parse input))
+          [t1 solution-1] (measure (solve-1 parsed))
+          [t2 solution-2] (measure (solve-2 parsed))]
+      (println (str "Parsed in: " tp "ms"))
+      (println (str "Part 1: " solution-1 " (" t1 "ms)"))
+      (println (str "Part 2: " solution-2 " (" t2 "ms)")))))
 
 (def cli-opts
   [["-y" "--year YEAR" "Year to run"

@@ -6,6 +6,7 @@
   :dependencies [
                  [org.clojure/clojure "1.10.0"]
                  [org.clojure/tools.cli "1.0.219"]
-                 [clj-http "3.12.3"]]
+                 [clj-http "3.12.3"]
+                 [org.clojure/core.match "1.0.1"]]
   :repl-options {:init-ns advent.core}
   :main ^:skip-aot advent.core)
